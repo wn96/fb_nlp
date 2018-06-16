@@ -15,7 +15,7 @@ Disclaimer: Most of the sentiment analysis code is based on [Jiayu Yi](https://m
 
 ## Images
 
-![Screen Shot 2018-06-16 at 11.42.35 PM](/Users/weineng/Desktop/Screen Shot 2018-06-16 at 11.42.35 PM.png)
+![Screenshot](images/ss1.jpg)
 
 ## Issues 
 
