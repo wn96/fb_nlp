@@ -10,4 +10,6 @@ def get_id(USER_URL):
 
     r = requests.get(fb_graph, params=params)
     fb_id = r.json().get('id')
+    if type(fb_id) != int:
+        return "0"
     return fb_id
