@@ -6,9 +6,9 @@ from dbhelper import DBHelper
 from config import *
 import get_stats
 from url_json_helper import *
+import facebook_id
 
 db = DBHelper()
-TOKEN = TOKEN
 URL = "https://api.telegram.org/bot{}/".format(TOKEN)
 
 def get_updates(offset=None):
@@ -29,11 +29,23 @@ def send_message(text, chat_id, reply_markup=None):
     get_url(url)
 
 def check_invalid(url):
-    return False
+    return url[:25] != 'https://www.facebook.com/' or get_post(url) == 0
+
+def get_post(fb_url):
+    if fb_url.split('/')[-1].isdigit():
+        return fb_url.split('/')[-1]
+    elif fb_url.split('/')[-2].isdigit():
+        return url.split('/')[-2]
+    else:
+        return 0
+
+def get_userid(fb_url):
+    a = fb_url[25:]
+    return a.split('/')[0]
 
 def handle_updates(updates):
     for update in updates["result"]:
-        try:
+        #try:
             if "message" not in update:
                 continue
             if "chat" not in update["message"]:
@@ -51,20 +63,21 @@ def handle_updates(updates):
                 input_url = text[7:]
                 if text == "/token":
                     send_message("Please add your facebook token.",chat)
-                elif check_invalid(input_url):
+                elif False:
                     send_message("You have entered an invalid Token",chat)
                 else:
                     #Adding from here
                     items = db.get_items(chat)
                     code = text[7:]
+
                     if items:
                         db.delete_all(chat)
                         db.add_item(code, chat)
                         send_message("Token has been replaced", chat)
+
                     else:
                         db.add_item(code, chat)
                         send_message("Token has been added", chat)
-                    print()
 
             elif text[:2] == "/s":
                 input_url = text[3:]
@@ -72,18 +85,16 @@ def handle_updates(updates):
                 if text == "/s":
                     send_message("Please type '/s <facebook link>' to check sentiments.",chat)
                 elif check_invalid(input_url):
-                    send_message("You have entered an invalid facebook URL",chat)
-                token = db.get_items()
-
+                    send_message("You have entered an invalid facebook URL.\nInput needs to be of form https://www.facebook.com/<username>/posts/<postid>", chat)
                 else:
-                        #
-                        #
-                        ###TODO###
-                        #
-                        #
+                    token = db.get_items(chat)
                     if token:
                         code = token[0]
-                        send_message(str(get_stats.sentiments_output(code, graph_api_version, user_id, post_id, limit)), chat)
+                        post_code = get_post(input_url)
+                        user_code = facebook_id.get_id(get_userid(input_url), code)
+                        result = print_summary(*(get_stats.sentiments_output(code, graph_api_version, user_code, post_code, limit)))
+                        send_message(result, chat)
+                        #send_message("Your token has expired. If the problem persist, you're fucked.", chat)
 
             elif text[:4] == '/del':
                 db.delete_all(chat)
@@ -108,10 +119,19 @@ def main():
             handle_updates(updates)
         time.sleep(0.5)
 
-def build_keyboard(items):
-    keyboard = [["/del " + item] for item in items]
-    reply_markup = {"keyboard":keyboard, "one_time_keyboard": True}
-    return json.dumps(reply_markup)
+def print_summary(positive_count, neutral_count, negative_count, failed, count):
+    positive_count = float(positive_count)
+    neutral_count = float(neutral_count)
+    negative_count = float(negative_count)
+    failed = float(failed)
+    count = float(count)
+
+    a = ('Total comments analysed: {}\n'.format(count))
+    b = ('Positive : {} ({:.0%})\n'.format(positive_count, positive_count / count))
+    c = ('Negative : {} ({:.0%})\n'.format(negative_count, negative_count / count))
+    d = ('Neutral : {} ({:.0%}))\n'.format(neutral_count, neutral_count / count))
+    e = ('Failed : {} ({:.0%}))'.format(failed, failed / count))
+    return a + b + c + d + e
 
 if __name__ == '__main__':
     main()

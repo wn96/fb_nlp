@@ -64,4 +64,4 @@ def sentiments_output(access_token, graph_api_version, user_id, post_id, limit):
         positive_proportion = positive_count / count
         neutral_proportion = neutral_count / count
         negative_proportion = negative_count / count
-    return (positive_count, neutral_count, negative_count, count)
+    return (positive_count, neutral_count, negative_count, failed, count)

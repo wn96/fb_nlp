@@ -4,9 +4,9 @@ import sys
 
 def get_comments(access_token, graph_api_version, user_id, post_id, limit=0):
     comments = []
-    
+
     url = 'https://graph.facebook.com/{}/{}_{}/comments'.format(graph_api_version, user_id, post_id)
-    
+
     # register a signal handler so that we can exit early
     def signal_handler(signal, frame):
         print('KeyboardInterrupt')

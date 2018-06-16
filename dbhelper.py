@@ -24,7 +24,7 @@ class DBHelper:
 
     def delete_all(self, owner):
         stmt = "DELETE FROM items WHERE owner = (?)"
-        args = owner
+        args = (owner,)
         self.conn.execute(stmt, args)
         self.conn.commit()
 
