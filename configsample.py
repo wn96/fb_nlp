@@ -5,7 +5,7 @@ graph_api_version = 'v3.0'
 access_token = ''
 
 # Set number of comments to be analysed.
-limit = 50
+limit = 2
 
 # Telegram Bot Token from BotFather
 TOKEN = ''

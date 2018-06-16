@@ -1,4 +1,4 @@
-# Facebook Sentiments Analysis Using Natural Language Processing#
+# Facebook Sentiments Analysis Using Natural Language Processing
 
 Disclaimer: Most of the sentiment analysis code is based on [Jiayu Yi](https://medium.com/google-cloud/sentiment-analysis-of-comments-on-lhls-facebook-page-9db8b3a60eb3). I work on integrating it with telegram.
 
@@ -6,8 +6,8 @@ Disclaimer: Most of the sentiment analysis code is based on [Jiayu Yi](https://m
 
 - This bot require users to input their facebook access token to allow searching of posts. Note that some post may not be assessible by users and will throw an error while using the bot.
 - Based on the URL, the bot will attempt to decipher both user-id/organisation-id of the original poster, and the post id provided by facebook. This was done pretty hackishly and hence is extremely unstable.
-- To save on processing power, each comment will only be analyzed based on the top 50 posts. 
-- Each comment will be sorted into four basic categories based on Google Cloud Natural Language API
+- To save on processing power, each comment will only be analyzed based on the top **50** posts. 
+- Each comment will be sorted into four basic categories based on **Google Cloud Natural Language API**
   - Positive
   - Negative
   - Neutral
@@ -17,7 +17,7 @@ Disclaimer: Most of the sentiment analysis code is based on [Jiayu Yi](https://m
 
 ![Screenshot](images/ss1.jpg)
 
-## Issues 
+## Known Issues 
 
 All pull request to improve this code will be greatly appreciated.
 

@@ -126,7 +126,7 @@ def print_summary(positive_count, neutral_count, negative_count, failed, count):
     failed = float(failed)
     count = float(count)
 
-    a = ('Total comments analysed: {}\n'.format(count))
+    a = ('Total comments analysed: {}\n'.format(int(count)))
     b = ('Positive : {} ({:.0%})\n'.format(positive_count, positive_count / count))
     c = ('Negative : {} ({:.0%})\n'.format(negative_count, negative_count / count))
     d = ('Neutral : {} ({:.0%}))\n'.format(neutral_count, neutral_count / count))
